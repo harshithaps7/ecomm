@@ -3,6 +3,8 @@ package com.example.demo.controllers;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ public class CartController {
 	
 	@Autowired
 	private ItemRepository itemRepository;
+
+	private static Logger log = LoggerFactory.getLogger(CartController.class);
 	
 	@PostMapping("/addToCart")
 	public ResponseEntity<Cart> addToCart(@RequestBody ModifyCartRequest request) {
@@ -40,6 +44,7 @@ public class CartController {
 		}
 		Optional<Item> item = itemRepository.findById(request.getItemId());
 		if(!item.isPresent()) {
+			log.error("ITEM_NOT_FOUND_ERROR : "+ request.getItemId());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		Cart cart = user.getCart();
@@ -59,6 +64,7 @@ public class CartController {
 		if(!item.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		log.info("ITEM_GOT_REMOVED : " + item.get().getName());
 		Cart cart = user.getCart();
 		IntStream.range(0, request.getQuantity())
 			.forEach(i -> cart.removeItem(item.get()));

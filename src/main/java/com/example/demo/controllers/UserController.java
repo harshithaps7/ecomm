@@ -51,10 +51,9 @@ public class UserController {
 	public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
 		User user = new User();
 		user.setUsername(createUserRequest.getUsername());
-		log.info("Trying to Create user : ", createUserRequest.getUsername());
 		if(createUserRequest.getPassword().length() < 7 ||
 				!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
-			log.error("Password did not meet Criteria. Cannot create user{}", createUserRequest.getUsername());
+			log.warn("PASSWORD_DID_NOT_MEET_CRITERIA");
 			return ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
