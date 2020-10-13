@@ -61,6 +61,7 @@ public class UserController {
 		cartRepository.save(cart);
 		user.setCart(cart);
 		userRepository.save(user);
+		log.info("User created successfully : " + user.getId());
 		return ResponseEntity.ok(user);
 	}
 	
