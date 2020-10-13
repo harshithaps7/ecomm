@@ -29,7 +29,9 @@ http://localhost:8080/api/user/create with an example body like
 
 ```
 {
-    "username": "test"
+    "username": "test",
+    "password": "password",
+    "confirmPassword: : "password"
 }
 ```
 
